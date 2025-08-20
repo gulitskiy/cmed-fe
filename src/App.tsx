@@ -1,38 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { useMsal, useIsAuthenticated } from '@azure/msal-react'
-import type { PopupRequest } from '@azure/msal-browser'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { useMsal, useIsAuthenticated } from "@azure/msal-react";
+import type { PopupRequest } from "@azure/msal-browser";
 
 function App() {
-  const [count, setCount] = useState(0)
-  const { instance, accounts } = useMsal()
-  const isAuthenticated = useIsAuthenticated()
+  const [count, setCount] = useState(0);
+  const { instance, accounts } = useMsal();
+  const isAuthenticated = useIsAuthenticated();
 
   const loginRequest: PopupRequest = {
     scopes: ["User.Read"],
-  }
+  };
 
   const handleLogin = async () => {
     try {
-      await instance.loginPopup(loginRequest)
-    } catch (e) {
+      await instance.loginPopup(loginRequest);
+    } catch {
       // ignore for now; in real app show error
-      // console.error(e)
     }
-  }
+  };
 
   const handleLogout = async () => {
     try {
-      await instance.logoutPopup()
-    } catch (e) {
-      // console.error(e)
-      instance.logoutRedirect()
+      await instance.logoutPopup();
+    } catch {
+      // fallback to redirect if popup fails
+      instance.logoutRedirect();
     }
-  }
+  };
 
-  const account = accounts && accounts[0]
+  const account = accounts && accounts[0];
 
   return (
     <>
@@ -69,7 +68,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

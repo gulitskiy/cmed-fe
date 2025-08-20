@@ -1,4 +1,7 @@
-import { type Configuration, PublicClientApplication } from "@azure/msal-browser";
+import {
+  type Configuration,
+  PublicClientApplication,
+} from "@azure/msal-browser";
 
 // MSAL configuration using provided Microsoft Entra ID settings
 export const msalConfig: Configuration = {
