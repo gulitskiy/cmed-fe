@@ -11,7 +11,7 @@ Currently, two official plugins are available:
 
 If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
+````js
 export default tseslint.config([
   globalIgnores(['dist']),
   {
@@ -93,3 +93,4 @@ export default tseslint.config([
     - add Prettier into the `lint-staged` pipeline so formatting runs before ESLint;
     - add a `pre-push` hook to run tests before pushing;
     - implement a React context / hook for auth state with unit tests.
+````
