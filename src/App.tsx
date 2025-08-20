@@ -1,9 +1,11 @@
-import { useState } from "react";
+import React, { Suspense, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { useMsal, useIsAuthenticated } from "@azure/msal-react";
 import type { PopupRequest } from "@azure/msal-browser";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+const SignInPage = React.lazy(() => import("./pages/sign-in/SignIn"));
 
 function App() {
   const [count, setCount] = useState(0);
@@ -34,40 +36,73 @@ function App() {
   const account = accounts && accounts[0];
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+    <BrowserRouter>
+      <>
+        <div>
+          <a href="https://vite.dev" target="_blank">
+            <img src={viteLogo} className="logo" alt="Vite logo" />
+          </a>
+          <a href="https://react.dev" target="_blank">
+            <img src={reactLogo} className="logo react" alt="React logo" />
+          </a>
+        </div>
+        <nav style={{ margin: "12px 0" }}>
+          <Link to="/">Home</Link> | <Link to="/sign-in">Sign in</Link>
+        </nav>
+        <h1>Vite + React</h1>
 
-      <div style={{ marginBottom: 16 }}>
-        {isAuthenticated ? (
-          <>
-            <div>Signed in as: {account?.username || account?.name}</div>
-            <button onClick={handleLogout}>Sign out</button>
-          </>
-        ) : (
-          <button onClick={handleLogin}>Sign in with Microsoft</button>
-        )}
-      </div>
+        <div style={{ marginBottom: 16 }}>
+          {isAuthenticated ? (
+            <>
+              <div>Signed in as: {account?.username || account?.name}</div>
+              <button onClick={handleLogout}>Sign out</button>
+            </>
+          ) : (
+            <button onClick={handleLogin}>Sign in with Microsoft</button>
+          )}
+        </div>
 
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+        <div className="card">
+          <button onClick={() => setCount((count) => count + 1)}>
+            count is {count}
+          </button>
+          <p>
+            Edit <code>src/App.tsx</code> and save to test HMR
+          </p>
+        </div>
+        <p className="read-the-docs">
+          Click on the Vite and React logos to learn more
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <div className="card">
+                  <button onClick={() => setCount((count) => count + 1)}>
+                    count is {count}
+                  </button>
+                  <p>
+                    Edit <code>src/App.tsx</code> and save to test HMR
+                  </p>
+                </div>
+                <p className="read-the-docs">
+                  Click on the Vite and React logos to learn more
+                </p>
+              </>
+            }
+          />
+          <Route
+            path="/sign-in"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <SignInPage />
+              </Suspense>
+            }
+          />
+        </Routes>
+      </>
+    </BrowserRouter>
   );
 }
 
